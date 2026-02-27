@@ -71,9 +71,9 @@ const LoginPage = () => {
                 <input type="checkbox" className="w-4 h-4 bg-black border-zinc-700 rounded accent-red-600" />
                 <span className="ml-2 text-sm text-gray-400">Remember me</span>
               </label>
-              <button type="button" onClick={() => alert('Password reset feature coming soon!')} className="text-sm text-red-600 hover:text-red-500">
+              {/*<button type="button" onClick={() => alert('Password reset feature coming soon!')} className="text-sm text-red-600 hover:text-red-500">
                 Forgot password?
-              </button>
+              </button> */}
             </div>
             <button
               type="submit"
