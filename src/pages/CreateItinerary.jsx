@@ -37,7 +37,7 @@ const handleSubmit = async (e) => {
     startDate: formData.startDate,   // ✅ send real date
     endDate: formData.endDate,       // ✅ send real date
     image: formData.image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800',
-    activities: 0,
+    activities: [],
     description: formData.description,
     budget: cleanBudget,
     dayPlans: []
