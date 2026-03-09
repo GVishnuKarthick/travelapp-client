@@ -57,7 +57,8 @@ const ItineraryDetails = () => {
   const handleSavePlan = async () => {
     const activitiesArray = activitiesInput
       .split("\n")
-      .filter(a => a.trim() !== "");
+.map(a => a.trim())
+.filter(a => a !== "");
 
     try {
       if (editingId) {
