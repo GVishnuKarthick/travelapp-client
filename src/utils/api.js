@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://travelapp-server-tkn3.onrender.com/api', // Change to your backend URL (e.g., production URL)
+  baseURL: import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:5079/api' : 'https://travelapp-server-tkn3.onrender.com/api'),
 });
 
 // Add JWT token to headers if logged in
