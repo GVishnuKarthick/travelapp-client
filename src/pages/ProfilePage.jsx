@@ -100,10 +100,6 @@ const ProfilePage = () => {
                     <Mail className="w-4 h-4 text-red-500" />
                     <span className="text-xs font-bold text-zinc-300 truncate">{userProfile.email}</span>
                   </div>
-                  <div className="flex items-center gap-3 px-4 py-3 bg-white/5 rounded-2xl border border-white/5">
-                    <Shield className="w-4 h-4 text-blue-500" />
-                    <span className="text-xs font-bold text-zinc-300">Verified Explorer</span>
-                  </div>
                 </div>
               </motion.div>
 
