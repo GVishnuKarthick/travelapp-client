@@ -38,7 +38,7 @@ const ProfilePage = () => {
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-[120px] pointer-events-none" />
 
           <div className="max-w-4xl mx-auto relative z-10">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="flex items-center justify-between mb-10"
@@ -47,16 +47,15 @@ const ProfilePage = () => {
                 <h2 className="text-4xl font-black text-white mb-2 tracking-tight uppercase">Profile</h2>
                 <p className="text-zinc-500 font-bold text-sm tracking-widest uppercase">Member since 2024</p>
               </div>
-              
+
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsEditing(!isEditing)}
-                className={`px-6 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 transition-all duration-300 ${
-                  isEditing 
-                  ? 'bg-zinc-800 text-white border border-zinc-700' 
-                  : 'bg-red-600 text-white shadow-lg shadow-red-600/20 hover:bg-red-700'
-                }`}
+                className={`px-6 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 transition-all duration-300 ${isEditing
+                    ? 'bg-zinc-800 text-white border border-zinc-700'
+                    : 'bg-red-600 text-white shadow-lg shadow-red-600/20 hover:bg-red-700'
+                  }`}
               >
                 {isEditing ? 'CANCEL' : (
                   <>
@@ -69,7 +68,7 @@ const ProfilePage = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Left Column: Avatar & Basic Info */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 }}
@@ -77,21 +76,19 @@ const ProfilePage = () => {
               >
                 <div className="glass-card rounded-3xl p-8 text-center relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gradient-to-b from-red-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
+
                   <div className="relative mb-6 mx-auto w-32 h-32">
                     <div className="w-full h-full bg-gradient-to-br from-red-600 to-red-800 rounded-3xl rotate-3 flex items-center justify-center shadow-2xl relative z-10">
                       <User className="w-14 h-14 text-white -rotate-3" />
                     </div>
                     <div className="absolute inset-0 bg-red-600/20 rounded-3xl blur-xl animate-pulse" />
-                    
-                    <button className="absolute bottom-0 right-0 w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-xl flex items-center justify-center text-zinc-400 hover:text-white hover:bg-red-600 transition-all z-20 shadow-xl">
-                      <Camera className="w-5 h-5" />
-                    </button>
+
+
                   </div>
-                  
+
                   <h3 className="text-2xl font-black text-white mb-1 uppercase tracking-tight">{userProfile.name}</h3>
                   <p className="text-zinc-500 font-bold text-sm mb-6 uppercase tracking-widest">{userProfile.location || 'Explorer'}</p>
-                  
+
                 </div>
 
                 <div className="glass-card rounded-3xl p-6 space-y-4">
@@ -104,7 +101,7 @@ const ProfilePage = () => {
               </motion.div>
 
               {/* Right Column: Bio & Forms */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
@@ -113,7 +110,7 @@ const ProfilePage = () => {
                 <div className="glass-card rounded-3xl p-8 h-full">
                   <AnimatePresence mode="wait">
                     {isEditing ? (
-                      <motion.div 
+                      <motion.div
                         key="edit-form"
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -126,7 +123,7 @@ const ProfilePage = () => {
                             <input
                               type="text"
                               value={editedProfile.name}
-                              onChange={(e) => setEditedProfile({...editedProfile, name: e.target.value})}
+                              onChange={(e) => setEditedProfile({ ...editedProfile, name: e.target.value })}
                               className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-2xl text-white font-bold focus:outline-none focus:border-red-600 transition-all placeholder:text-zinc-700"
                               placeholder="John Wick"
                             />
@@ -136,7 +133,7 @@ const ProfilePage = () => {
                             <input
                               type="text"
                               value={editedProfile.location}
-                              onChange={(e) => setEditedProfile({...editedProfile, location: e.target.value})}
+                              onChange={(e) => setEditedProfile({ ...editedProfile, location: e.target.value })}
                               className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-2xl text-white font-bold focus:outline-none focus:border-red-600 transition-all placeholder:text-zinc-700"
                               placeholder="New York, USA"
                             />
@@ -147,7 +144,7 @@ const ProfilePage = () => {
                           <label className="block text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2 ml-2">Travel Bio</label>
                           <textarea
                             value={editedProfile.bio}
-                            onChange={(e) => setEditedProfile({...editedProfile, bio: e.target.value})}
+                            onChange={(e) => setEditedProfile({ ...editedProfile, bio: e.target.value })}
                             className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-2xl text-white font-bold focus:outline-none focus:border-red-600 transition-all h-40 resize-none placeholder:text-zinc-700"
                             placeholder="Tell the world about your wanderlust..."
                           />
@@ -164,7 +161,7 @@ const ProfilePage = () => {
                         </motion.button>
                       </motion.div>
                     ) : (
-                      <motion.div 
+                      <motion.div
                         key="view-profile"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -181,17 +178,17 @@ const ProfilePage = () => {
                         </div>
 
                         <div className="grid grid-cols-2 gap-6 pt-10 border-t border-white/5">
-                           <div className="p-8 bg-white/5 rounded-[2rem] border border-white/5 flex flex-col items-center justify-center group hover:bg-white/10 transition-all cursor-default">
-                              <p className="text-6xl font-black text-white mb-2 tracking-tighter group-hover:scale-110 transition-transform">{itineraries?.length || 0}</p>
-                              <p className="text-zinc-500 font-black text-xs uppercase tracking-[0.2em] mb-4">Total Trips</p>
-                              <div className="w-12 h-1 bg-red-600 rounded-full shadow-[0_0_15px_rgba(220,38,38,0.5)]" />
-                           </div>
-                           
-                           <div className="p-8 bg-white/5 rounded-[2rem] border border-white/5 flex flex-col items-center justify-center group hover:bg-white/10 transition-all cursor-default">
-                              <p className="text-6xl font-black text-white mb-2 tracking-tighter group-hover:scale-110 transition-transform">{memories?.length || 0}</p>
-                              <p className="text-zinc-500 font-black text-xs uppercase tracking-[0.2em] mb-4">Total Memories</p>
-                              <div className="w-12 h-1 bg-white/20 rounded-full group-hover:bg-red-600/50 transition-colors" />
-                           </div>
+                          <div className="p-8 bg-white/5 rounded-[2rem] border border-white/5 flex flex-col items-center justify-center group hover:bg-white/10 transition-all cursor-default">
+                            <p className="text-6xl font-black text-white mb-2 tracking-tighter group-hover:scale-110 transition-transform">{itineraries?.length || 0}</p>
+                            <p className="text-zinc-500 font-black text-xs uppercase tracking-[0.2em] mb-4">Total Trips</p>
+                            <div className="w-12 h-1 bg-red-600 rounded-full shadow-[0_0_15px_rgba(220,38,38,0.5)]" />
+                          </div>
+
+                          <div className="p-8 bg-white/5 rounded-[2rem] border border-white/5 flex flex-col items-center justify-center group hover:bg-white/10 transition-all cursor-default">
+                            <p className="text-6xl font-black text-white mb-2 tracking-tighter group-hover:scale-110 transition-transform">{memories?.length || 0}</p>
+                            <p className="text-zinc-500 font-black text-xs uppercase tracking-[0.2em] mb-4">Total Memories</p>
+                            <div className="w-12 h-1 bg-white/20 rounded-full group-hover:bg-red-600/50 transition-colors" />
+                          </div>
                         </div>
                       </motion.div>
                     )}
