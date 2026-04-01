@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
-import { Edit, MapPin, Save, User, Mail, Shield, Camera, Settings } from 'lucide-react';
+import { Edit, MapPin, Save, User, Mail, Shield, Camera, Settings, Calendar } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 import api from '../utils/api';
 import { motion, AnimatePresence } from 'framer-motion';

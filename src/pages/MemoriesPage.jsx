@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import api from "../utils/api";
 import { AppContext } from "../context/AppContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, Journal, Trash2, Edit3, Plus, Image as ImageIcon, Heart, MapPin, Calendar, Clock } from "lucide-react";
+import { Camera, Trash2, Edit3, Plus, Image as ImageIcon, Heart, MapPin, Calendar, Clock, Notebook as JournalIcon } from "lucide-react";
 
 const MemoriesPage = () => {
   const { itineraries } = useContext(AppContext);
