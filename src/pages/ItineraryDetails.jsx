@@ -129,11 +129,10 @@ const ItineraryDetails = () => {
               </div>
             </motion.div>
 
-            {/* Hero Section */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              className="relative h-[450px] rounded-[3rem] overflow-hidden mb-12 shadow-2xl glass border-white/5"
+              className="relative h-[400px] lg:h-[450px] rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden mb-12 shadow-2xl glass border-white/5"
             >
               <img
                 src={selectedItinerary.image || 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=2070'}
@@ -142,38 +141,38 @@ const ItineraryDetails = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-12">
+              <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-12">
                 <motion.span 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="inline-block px-4 py-1.5 bg-red-600 text-white font-black text-[10px] uppercase tracking-[0.2em] rounded-full mb-4 shadow-[0_0_20px_rgba(220,38,38,0.5)]"
+                  className="inline-block px-3 lg:px-4 py-1 lg:py-1.5 bg-red-600 text-white font-black text-[9px] lg:text-[10px] uppercase tracking-[0.2em] rounded-full mb-3 lg:mb-4 shadow-[0_0_20px_rgba(220,38,38,0.5)]"
                 >
                   Active Journey
                 </motion.span>
-                <h1 className="text-7xl font-black text-white mb-6 uppercase tracking-tighter leading-none">
+                <h1 className="text-4xl lg:text-7xl font-black text-white mb-4 lg:mb-6 uppercase tracking-tighter leading-none break-words">
                   {selectedItinerary.destination}
                 </h1>
 
-                <div className="flex flex-wrap items-center gap-8 text-white/80">
-                  <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/10">
-                    <Calendar className="w-5 h-5 text-red-500" />
-                    <span className="font-bold text-sm">
+                <div className="flex flex-wrap items-center gap-3 lg:gap-8 text-white/80">
+                  <div className="flex items-center gap-2 lg:gap-3 bg-white/5 backdrop-blur-md px-3 lg:px-5 py-2 lg:py-2.5 rounded-xl lg:rounded-2xl border border-white/10">
+                    <Calendar className="w-4 h-4 lg:w-5 lg:h-5 text-red-500" />
+                    <span className="font-bold text-[10px] lg:text-sm">
                       {new Date(selectedItinerary.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} -{" "}
-                      {new Date(selectedItinerary.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {new Date(selectedItinerary.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/10">
-                    <Clock className="w-5 h-5 text-red-500" />
-                    <span className="font-bold text-sm">
+                  <div className="flex items-center gap-2 lg:gap-3 bg-white/5 backdrop-blur-md px-3 lg:px-5 py-2 lg:py-2.5 rounded-xl lg:rounded-2xl border border-white/10">
+                    <Clock className="w-4 h-4 lg:w-5 lg:h-5 text-red-500" />
+                    <span className="font-bold text-[10px] lg:text-sm">
                       {Math.ceil((new Date(selectedItinerary.endDate) - new Date(selectedItinerary.startDate)) / (1000 * 60 * 60 * 24)) + 1} Days
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 bg-white/5 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/10">
-                    <MapPin className="w-5 h-5 text-red-500" />
-                    <span className="font-bold text-sm">{selectedItinerary.dayPlans?.length || 0} Total Plans</span>
+                  <div className="flex items-center gap-2 lg:gap-3 bg-white/5 backdrop-blur-md px-3 lg:px-5 py-2 lg:py-2.5 rounded-xl lg:rounded-2xl border border-white/10">
+                    <MapPin className="w-4 h-4 lg:w-5 lg:h-5 text-red-500" />
+                    <span className="font-bold text-[10px] lg:text-sm">{selectedItinerary.dayPlans?.length || 0} Total Plans</span>
                   </div>
                 </div>
               </div>
