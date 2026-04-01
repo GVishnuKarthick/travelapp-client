@@ -92,17 +92,6 @@ const ProfilePage = () => {
                   <h3 className="text-2xl font-black text-white mb-1 uppercase tracking-tight">{userProfile.name}</h3>
                   <p className="text-zinc-500 font-bold text-sm mb-6 uppercase tracking-widest">{userProfile.location || 'Explorer'}</p>
                   
-                  <div className="flex items-center justify-center gap-4 pt-6 border-t border-zinc-800/50">
-                    <div className="text-center">
-                      <p className="text-white font-black text-lg">{itineraries?.length || 0}</p>
-                      <p className="text-zinc-500 text-[10px] font-black uppercase tracking-tighter">Trips</p>
-                    </div>
-                    <div className="w-px h-8 bg-zinc-800/50" />
-                    <div className="text-center">
-                      <p className="text-white font-black text-lg">{memories?.length || 0}</p>
-                      <p className="text-zinc-500 text-[10px] font-black uppercase tracking-tighter">Memories</p>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="glass-card rounded-3xl p-6 space-y-4">
@@ -195,18 +184,17 @@ const ProfilePage = () => {
                           </p>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-10">
-                           <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                              <Settings className="w-5 h-5 text-zinc-500 mb-2" />
-                              <p className="text-white font-bold text-xs uppercase">Settings</p>
+                        <div className="grid grid-cols-2 gap-6 pt-10 border-t border-white/5">
+                           <div className="p-8 bg-white/5 rounded-[2rem] border border-white/5 flex flex-col items-center justify-center group hover:bg-white/10 transition-all cursor-default">
+                              <p className="text-6xl font-black text-white mb-2 tracking-tighter group-hover:scale-110 transition-transform">{itineraries?.length || 0}</p>
+                              <p className="text-zinc-500 font-black text-xs uppercase tracking-[0.2em] mb-4">Total Trips</p>
+                              <div className="w-12 h-1 bg-red-600 rounded-full shadow-[0_0_15px_rgba(220,38,38,0.5)]" />
                            </div>
-                           <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                              <Camera className="w-5 h-5 text-zinc-500 mb-2" />
-                              <p className="text-white font-bold text-xs uppercase">Galleries</p>
-                           </div>
-                           <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
-                              <Calendar className="w-5 h-5 text-zinc-500 mb-2" />
-                              <p className="text-white font-bold text-xs uppercase">Planner</p>
+                           
+                           <div className="p-8 bg-white/5 rounded-[2rem] border border-white/5 flex flex-col items-center justify-center group hover:bg-white/10 transition-all cursor-default">
+                              <p className="text-6xl font-black text-white mb-2 tracking-tighter group-hover:scale-110 transition-transform">{memories?.length || 0}</p>
+                              <p className="text-zinc-500 font-black text-xs uppercase tracking-[0.2em] mb-4">Total Memories</p>
+                              <div className="w-12 h-1 bg-white/20 rounded-full group-hover:bg-red-600/50 transition-colors" />
                            </div>
                         </div>
                       </motion.div>
