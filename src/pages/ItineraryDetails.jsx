@@ -327,14 +327,6 @@ const ItineraryDetails = () => {
                     </div>
                  </motion.div>
 
-                 <div className="glass-card rounded-[2.5rem] p-8 overflow-hidden relative">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl" />
-                    <h4 className="text-zinc-400 text-[10px] font-black uppercase tracking-[0.2em] mb-6">Adventure Map</h4>
-                    <div className="aspect-square bg-zinc-950 rounded-3xl border border-white/5 flex flex-col items-center justify-center p-8 text-center">
-                       <MapPin className="w-12 h-12 text-zinc-800 mb-4 animate-bounce" />
-                       <p className="text-zinc-600 font-bold text-xs uppercase tracking-widest leading-loose">Visual mapping coming in next update</p>
-                    </div>
-                 </div>
               </div>
 
             </div>
