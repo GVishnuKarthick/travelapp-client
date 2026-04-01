@@ -20,9 +20,8 @@ const Sidebar = () => {
     <>
       {/* Mobile Overlay */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden transition-opacity duration-300 ${
-          isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
+        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}
         onClick={() => setIsSidebarOpen(false)}
       ></div>
 
@@ -53,19 +52,18 @@ const Sidebar = () => {
                     navigate(item.path);
                     setIsSidebarOpen(false);
                   }}
-                  className={`flex items-center gap-3 px-4 py-3.5 w-full rounded-xl transition-all duration-300 group relative ${
-                    isActive
+                  className={`flex items-center gap-3 px-4 py-3.5 w-full rounded-xl transition-all duration-300 group relative ${isActive
                       ? 'text-white bg-zinc-800/80 shadow-md border border-zinc-700/50'
                       : 'text-zinc-400 hover:text-white hover:bg-zinc-800/40'
-                  }`}
+                    }`}
                 >
                   <item.icon className={`w-5 h-5 transition-all duration-300 ${isActive ? 'text-red-500 scale-110' : 'text-zinc-500 group-hover:text-red-500'}`} />
                   <span className={`font-semibold tracking-wide ${isActive ? 'translate-x-1' : 'group-hover:translate-x-1'} transition-transform`}>{item.label}</span>
-                  
+
                   {isActive && (
-                    <motion.div 
+                    <motion.div
                       layoutId="sidebar-active"
-                      className="ml-auto w-1.5 h-1.5 rounded-full bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)]" 
+                      className="ml-auto w-1.5 h-1.5 rounded-full bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)]"
                     />
                   )}
                 </button>
@@ -73,18 +71,7 @@ const Sidebar = () => {
             })}
           </div>
 
-          <div className="mt-auto pt-6 border-t border-zinc-800/50">
-            <div className="p-4 bg-gradient-to-br from-red-600/10 to-transparent border border-red-600/20 rounded-2xl relative overflow-hidden group">
-              <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-red-600/5 rounded-full blur-2xl group-hover:bg-red-600/10 transition-colors" />
-              <h3 className="text-white text-sm font-bold mb-1 relative z-10">Premium Plan</h3>
-              <p className="text-zinc-500 text-xs mb-3 relative z-10 leading-relaxed">
-                Connect with travel enthusiasts and unlock all features.
-              </p>
-              <button className="text-red-500 text-xs font-bold hover:text-red-400 transition relative z-10">
-                Learn More →
-              </button>
-            </div>
-          </div>
+
         </nav>
       </aside>
     </>
