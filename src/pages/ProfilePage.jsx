@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext,useEffect } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { Edit, MapPin, Save, User } from 'lucide-react';
@@ -18,7 +18,7 @@ const ProfilePage = () => {
 
   const handleSaveProfile = async () => {
     try {
-      await api.put('/profile', editedProfile);
+      await api.put('/users/profile', editedProfile);
       setUserProfile(editedProfile);
       //sfetchProfile();
       setIsEditing(false);
@@ -27,7 +27,19 @@ const ProfilePage = () => {
       console.error('Failed to update profile', error);
     }
   };
+useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const res = await api.get("/users/profile"); // ✅ correct
+      setUserProfile(res.data);
+      setEditedProfile(res.data);
+    } catch (err) {
+      console.error("Failed to fetch profile", err);
+    }
+  };
 
+  fetchProfile();
+}, []);
   return (
     <div className="min-h-screen bg-black">
       <Header />

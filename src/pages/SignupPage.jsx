@@ -45,7 +45,7 @@ const SignupPage = () => {
                 email: e.target.email.value,
                 password: e.target.password.value
               });
-              localStorage.setItem('jwt', loginResponse.data.token);
+              localStorage.setItem("token", response.data.Token);
               setIsLoggedIn(true);
               navigate('/dashboard');
             } catch (error) {
