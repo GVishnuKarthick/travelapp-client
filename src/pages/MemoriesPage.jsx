@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import api from "../utils/api";
 import { AppContext } from "../context/AppContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { Camera, Journal, Trash2, Edit3, Plus, Image as ImageIcon, Heart, MapPin, Calendar, Clock } from "lucide-react";
 
 const MemoriesPage = () => {
   const { itineraries } = useContext(AppContext);
@@ -11,6 +13,7 @@ const MemoriesPage = () => {
   const [selectedTrip, setSelectedTrip] = useState("");
   const [type, setType] = useState("photo");
   const [editingId, setEditingId] = useState(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     imageUrl: "",
@@ -26,11 +29,14 @@ const MemoriesPage = () => {
   }, []);
 
   const fetchMemories = async () => {
-    const res = await api.get("/memories");
-    setMemories(res.data);
+    try {
+      const res = await api.get("/memories");
+      setMemories(res.data);
+    } catch (err) {
+      console.error("Failed to fetch memories", err);
+    }
   };
 
-  // ✅ ADD / UPDATE MEMORY
   const handleSubmit = async () => {
     if (!selectedTrip) return alert("Select a trip");
 
@@ -72,6 +78,7 @@ const MemoriesPage = () => {
         highlight: "",
         dayNumber: ""
       });
+      setIsFormOpen(false);
 
     } catch (err) {
       console.error(err);
@@ -79,7 +86,6 @@ const MemoriesPage = () => {
     }
   };
 
-  // ✅ DELETE SINGLE MEMORY
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this memory?")) return;
 
@@ -92,29 +98,11 @@ const MemoriesPage = () => {
     }
   };
 
-  // ✅ DELETE ALL MEMORIES OF A TRIP
-  const handleDeleteTripMemories = async (tripId) => {
-    if (!window.confirm("Delete ALL memories of this trip?")) return;
-
-    const tripMemories = memories.filter(m => m.tripId === tripId);
-
-    try {
-      await Promise.all(
-        tripMemories.map(m => api.delete(`/memories/${m.id}`))
-      );
-
-      setMemories(prev => prev.filter(m => m.tripId !== tripId));
-    } catch (err) {
-      console.error(err);
-      alert("Failed to delete trip memories");
-    }
-  };
-
-  // ✅ EDIT MEMORY
   const handleEdit = (memory) => {
     setEditingId(memory.id);
     setSelectedTrip(memory.tripId);
     setType(memory.type);
+    setIsFormOpen(true);
 
     setFormData({
       imageUrl: memory.imageUrl || "",
@@ -134,192 +122,248 @@ const MemoriesPage = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black selection:bg-red-500/30">
       <Header />
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 p-8">
-          <div className="max-w-6xl mx-auto text-white">
+        <main className="flex-1 p-6 lg:p-10 relative overflow-hidden">
+          {/* Background Decoration */}
+          <div className="absolute top-40 left-0 w-96 h-96 bg-red-600/5 rounded-full blur-[120px] pointer-events-none" />
 
-            <h2 className="text-3xl font-bold mb-6">
-              Trip Memories Journal
-            </h2>
-
-            {/* FORM */}
-            <div className="bg-zinc-900 p-6 rounded-xl mb-10 space-y-4">
-
-              <select
-                value={selectedTrip}
-                onChange={(e) => setSelectedTrip(e.target.value)}
-                className="w-full p-3 bg-zinc-800 rounded"
-              >
-                <option value="">Select Trip</option>
-                {itineraries.map(trip => (
-                  <option key={trip.id} value={trip.id}>
-                    {trip.destination} ({trip.dates})
-                  </option>
-                ))}
-              </select>
-
-              <select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                className="w-full p-3 bg-zinc-800 rounded"
-              >
-                <option value="photo">Photo</option>
-                <option value="journal">Journal</option>
-              </select>
-
-              {type === "photo" && (
-                <>
-                  <input
-                    placeholder="Image URL"
-                    className="w-full p-3 bg-zinc-800 rounded"
-                    value={formData.imageUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, imageUrl: e.target.value })
-                    }
-                  />
-                  <input
-                    placeholder="Caption"
-                    className="w-full p-3 bg-zinc-800 rounded"
-                    value={formData.caption}
-                    onChange={(e) =>
-                      setFormData({ ...formData, caption: e.target.value })
-                    }
-                  />
-                </>
-              )}
-
-              {type === "journal" && (
-                <>
-                  <input
-                    type="number"
-                    placeholder="Day Number"
-                    className="w-full p-3 bg-zinc-800 rounded"
-                    value={formData.dayNumber}
-                    onChange={(e) =>
-                      setFormData({ ...formData, dayNumber: e.target.value })
-                    }
-                  />
-                  <input
-                    placeholder="Mood"
-                    className="w-full p-3 bg-zinc-800 rounded"
-                    value={formData.mood}
-                    onChange={(e) =>
-                      setFormData({ ...formData, mood: e.target.value })
-                    }
-                  />
-                  <textarea
-                    placeholder="Journal Note"
-                    className="w-full p-3 bg-zinc-800 rounded"
-                    value={formData.note}
-                    onChange={(e) =>
-                      setFormData({ ...formData, note: e.target.value })
-                    }
-                  />
-                  <input
-                    placeholder="Highlight"
-                    className="w-full p-3 bg-zinc-800 rounded"
-                    value={formData.highlight}
-                    onChange={(e) =>
-                      setFormData({ ...formData, highlight: e.target.value })
-                    }
-                  />
-                </>
-              )}
-
-              <button
-                onClick={handleSubmit}
-                className="bg-red-600 px-6 py-2 rounded"
-              >
-                {editingId ? "Update Memory" : "Add Memory"}
-              </button>
-            </div>
-
-            {/* DISPLAY */}
-            {groupedTrips.map(trip => (
-              <div key={trip.id} className="mb-12">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-2xl font-bold">
-                    {trip.destination} ({trip.dates})
-                  </h3>
-                  {trip.memories.length > 0 && (
-                    <button
-                      onClick={() => handleDeleteTripMemories(trip.id)}
-                      className="bg-red-700 px-3 py-1 text-sm rounded"
-                    >
-                      Delete All
-                    </button>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  {trip.memories
-                    .filter(m => m.type === "photo")
-                    .map(photo => (
-                      <div key={photo.id} className="bg-zinc-900 p-4 rounded relative">
-                        <div className="absolute top-2 right-2 flex gap-2">
-                          <button
-                            onClick={() => handleEdit(photo)}
-                            className="bg-yellow-600 px-2 py-1 text-xs rounded"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(photo.id)}
-                            className="bg-red-600 px-2 py-1 text-xs rounded"
-                          >
-                            Delete
-                          </button>
-                        </div>
-
-                        <img
-                          src={photo.imageUrl}
-                          className="w-full h-40 object-cover rounded"
-                        />
-                        <p className="mt-2 text-gray-300">
-                          {photo.caption}
-                        </p>
-                      </div>
-                  ))}
-                </div>
-
-                <div className="space-y-4">
-                  {trip.memories
-                    .filter(m => m.type === "journal")
-                    .map(journal => (
-                      <div key={journal.id} className="bg-zinc-900 p-4 rounded relative">
-                        <div className="absolute top-2 right-2 flex gap-2">
-                          <button
-                            onClick={() => handleEdit(journal)}
-                            className="bg-yellow-600 px-2 py-1 text-xs rounded"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(journal.id)}
-                            className="bg-red-600 px-2 py-1 text-xs rounded"
-                          >
-                            Delete
-                          </button>
-                        </div>
-
-                        <p className="font-semibold">
-                          Day {journal.dayNumber} – {journal.mood}
-                        </p>
-                        <p className="mt-2 text-gray-300">
-                          {journal.note}
-                        </p>
-                        <p className="text-red-500 mt-1">
-                          ⭐ {journal.highlight}
-                        </p>
-                      </div>
-                  ))}
-                </div>
+          <div className="max-w-6xl mx-auto relative z-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center justify-between mb-10"
+            >
+              <div>
+                <h2 className="text-4xl font-black text-white mb-2 tracking-tight uppercase">Memories Journal</h2>
+                <p className="text-zinc-500 font-bold text-sm tracking-widest uppercase">Capturing your world, one moment at a time.</p>
               </div>
-            ))}
+              
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsFormOpen(!isFormOpen)}
+                className="bg-red-600 text-white font-black py-3 px-6 rounded-2xl shadow-lg shadow-red-600/20 hover:bg-red-700 transition flex items-center gap-2 text-sm uppercase tracking-widest"
+              >
+                <Plus className="w-5 h-5" />
+                {isFormOpen ? "CLOSE" : "ADD MEMORY"}
+              </motion.button>
+            </motion.div>
 
+            <AnimatePresence>
+              {isFormOpen && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="glass-card rounded-3xl p-8 mb-12 border-red-600/20">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2 ml-2">Select Adventure</label>
+                          <select
+                            value={selectedTrip}
+                            onChange={(e) => setSelectedTrip(e.target.value)}
+                            className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-2xl text-white font-bold focus:outline-none focus:border-red-600 transition appearance-none cursor-pointer"
+                          >
+                            <option value="">Where did you go?</option>
+                            {itineraries.map(trip => (
+                              <option key={trip.id} value={trip.id}>{trip.destination}</option>
+                            ))}
+                          </select>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2 ml-2">Memory Type</label>
+                          <div className="flex gap-4 p-1.5 bg-black rounded-2xl border border-zinc-800">
+                             {['photo', 'journal'].map((t) => (
+                               <button 
+                                 key={t}
+                                 onClick={() => setType(t)}
+                                 className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${type === t ? 'bg-red-600 text-white shadow-lg shadow-red-600/20' : 'text-zinc-500 hover:text-zinc-300'}`}
+                               >
+                                 {t}
+                               </button>
+                             ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        {type === "photo" ? (
+                          <>
+                            <div>
+                              <label className="block text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2 ml-2">Image URL</label>
+                              <input
+                                placeholder="Paste the link to your photo..."
+                                className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-2xl text-white font-bold focus:outline-none focus:border-red-600 transition"
+                                value={formData.imageUrl}
+                                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                              />
+                            </div>
+                            <div>
+                               <label className="block text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2 ml-2">Caption</label>
+                               <input
+                                 placeholder="What's happening in this shot?"
+                                 className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-2xl text-white font-bold focus:outline-none focus:border-red-600 transition"
+                                 value={formData.caption}
+                                 onChange={(e) => setFormData({ ...formData, caption: e.target.value })}
+                               />
+                            </div>
+                          </>
+                        ) : (
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                               <label className="block text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2 ml-2">Day #</label>
+                               <input
+                                 type="number"
+                                 placeholder="1"
+                                 className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-2xl text-white font-bold focus:outline-none focus:border-red-600 transition"
+                                 value={formData.dayNumber}
+                                 onChange={(e) => setFormData({ ...formData, dayNumber: e.target.value })}
+                               />
+                            </div>
+                            <div>
+                               <label className="block text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2 ml-2">Mood</label>
+                               <input
+                                 placeholder="Excited, Relaxed..."
+                                 className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-2xl text-white font-bold focus:outline-none focus:border-red-600 transition"
+                                 value={formData.mood}
+                                 onChange={(e) => setFormData({ ...formData, mood: e.target.value })}
+                               />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {type === "journal" && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                           <label className="block text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2 ml-2">The Highlight</label>
+                           <input
+                             placeholder="The absolute best moment..."
+                             className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-2xl text-white font-bold focus:outline-none focus:border-red-600 transition"
+                             value={formData.highlight}
+                             onChange={(e) => setFormData({ ...formData, highlight: e.target.value })}
+                           />
+                        </div>
+                        <div>
+                           <label className="block text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2 ml-2">Notes</label>
+                           <textarea
+                             placeholder="Write down the details..."
+                             className="w-full px-5 py-4 bg-black border border-zinc-800 rounded-2xl text-white font-bold focus:outline-none focus:border-red-600 transition h-14 resize-none"
+                             value={formData.note}
+                             onChange={(e) => setFormData({ ...formData, note: e.target.value })}
+                           />
+                        </div>
+                      </div>
+                    )}
+
+                    <motion.button
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                      onClick={handleSubmit}
+                      className="w-full bg-white text-black font-black py-4 rounded-2xl hover:bg-zinc-200 transition-colors uppercase tracking-widest text-sm"
+                    >
+                      {editingId ? "UPDATE MEMORY" : "SAVE TO JOURNAL"}
+                    </motion.button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* GALLERIES */}
+            <div className="space-y-16">
+              {groupedTrips.map(trip => (
+                <motion.div 
+                  key={trip.id}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="flex items-end justify-between mb-8 border-b border-zinc-800/50 pb-4">
+                    <div>
+                      <h3 className="text-3xl font-black text-white tracking-tighter uppercase line-clamp-1">{trip.destination}</h3>
+                      <div className="flex items-center gap-3 mt-1">
+                         <span className="text-red-500 text-[10px] font-black uppercase tracking-widest">{trip.memories.length} MOMENTS</span>
+                         <div className="w-1 h-1 rounded-full bg-zinc-800" />
+                         <span className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">{new Date(trip.startDate).getFullYear()}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {trip.memories.length === 0 ? (
+                    <div className="py-12 text-center glass-card rounded-3xl border-dashed">
+                       <Camera className="w-10 h-10 text-zinc-800 mx-auto mb-3" />
+                       <p className="text-zinc-600 font-bold uppercase tracking-widest text-xs">No memories recorded for this trip yet.</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {trip.memories.map((memo, idx) => (
+                        <motion.div 
+                          key={memo.id}
+                          whileHover={{ y: -8 }}
+                          className="glass-card rounded-[2rem] overflow-hidden group border-white/5 h-full flex flex-col"
+                        >
+                          {memo.type === "photo" ? (
+                            <div className="relative h-64 overflow-hidden">
+                              <img src={memo.imageUrl} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                              <div className="absolute bottom-5 left-5 right-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                 <p className="text-white font-bold text-sm leading-tight italic">"{memo.caption}"</p>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="p-8 h-64 bg-zinc-900/50 flex flex-col justify-center relative overflow-hidden">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-red-600/5 rounded-full blur-2xl" />
+                              <div className="flex items-center gap-2 mb-4">
+                                <Clock className="w-4 h-4 text-red-500" />
+                                <span className="text-zinc-500 text-[10px] font-black uppercase tracking-tighter">Day {memo.dayNumber} Journal</span>
+                              </div>
+                              <p className="text-white text-lg font-medium leading-relaxed italic mb-4 line-clamp-3">"{memo.note}"</p>
+                              <div className="mt-auto">
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-600/10 rounded-full text-red-500 text-[10px] font-black uppercase">
+                                  <Heart className="w-3 h-3 fill-red-500" /> {memo.mood}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="p-5 mt-auto flex items-center justify-between border-t border-white/5 bg-white/2">
+                            <div className="flex items-center gap-2">
+                               <button 
+                                 onClick={() => handleEdit(memo)}
+                                 className="w-9 h-9 glass rounded-xl flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all"
+                               >
+                                 <Edit3 className="w-4 h-4" />
+                               </button>
+                               <button 
+                                 onClick={() => handleDelete(memo.id)}
+                                 className="w-9 h-9 glass rounded-xl flex items-center justify-center text-zinc-400 hover:text-red-500 hover:bg-red-500/10 transition-all"
+                               >
+                                 <Trash2 className="w-4 h-4" />
+                               </button>
+                            </div>
+                            
+                            {memo.type === "photo" && (
+                              <div className="flex items-center gap-1.5 py-1 px-3 glass rounded-full">
+                                <ImageIcon className="w-3 h-3 text-red-500" />
+                                <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-tighter">Photo</span>
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
           </div>
         </main>
       </div>
