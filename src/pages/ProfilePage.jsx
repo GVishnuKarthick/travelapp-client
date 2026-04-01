@@ -13,23 +13,9 @@ const ProfilePage = () => {
     return <div className="min-h-screen bg-black flex items-center justify-center text-red-500 font-bold">Context not available.</div>;
   }
 
-  const { userProfile, setUserProfile } = context;
+  const { userProfile, setUserProfile, itineraries, memories } = context;
   const [isEditing, setIsEditing] = useState(false);
   const [editedProfile, setEditedProfile] = useState(userProfile);
-
-  const fetchProfile = async () => {
-    try {
-      const res = await api.get("/profile");
-      setUserProfile(res.data);
-      setEditedProfile(res.data);
-    } catch (err) {
-      console.error("Failed to fetch profile", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchProfile();
-  }, []);
 
   const handleSaveProfile = async () => {
     try {
@@ -108,12 +94,12 @@ const ProfilePage = () => {
                   
                   <div className="flex items-center justify-center gap-4 pt-6 border-t border-zinc-800/50">
                     <div className="text-center">
-                      <p className="text-white font-black text-lg">12</p>
+                      <p className="text-white font-black text-lg">{itineraries?.length || 0}</p>
                       <p className="text-zinc-500 text-[10px] font-black uppercase tracking-tighter">Trips</p>
                     </div>
                     <div className="w-px h-8 bg-zinc-800/50" />
                     <div className="text-center">
-                      <p className="text-white font-black text-lg">45</p>
+                      <p className="text-white font-black text-lg">{memories?.length || 0}</p>
                       <p className="text-zinc-500 text-[10px] font-black uppercase tracking-tighter">Memories</p>
                     </div>
                   </div>

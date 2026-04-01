@@ -7,9 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Camera, Trash2, Edit3, Plus, Image as ImageIcon, Heart, MapPin, Calendar, Clock, Notebook as JournalIcon } from "lucide-react";
 
 const MemoriesPage = () => {
-  const { itineraries } = useContext(AppContext);
-
-  const [memories, setMemories] = useState([]);
+  const { itineraries, memories, setMemories, fetchMemories } = useContext(AppContext);
   const [selectedTrip, setSelectedTrip] = useState("");
   const [type, setType] = useState("photo");
   const [editingId, setEditingId] = useState(null);
@@ -27,15 +25,6 @@ const MemoriesPage = () => {
   useEffect(() => {
     fetchMemories();
   }, []);
-
-  const fetchMemories = async () => {
-    try {
-      const res = await api.get("/memories");
-      setMemories(res.data);
-    } catch (err) {
-      console.error("Failed to fetch memories", err);
-    }
-  };
 
   const handleSubmit = async () => {
     if (!selectedTrip) return alert("Select a trip");
