@@ -13,6 +13,7 @@ const SignupPage = () => {
 
   const { setIsLoggedIn } = context;
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
@@ -34,6 +35,7 @@ const SignupPage = () => {
          
           <form onSubmit={async (e) => {
             e.preventDefault();
+            setIsLoading(true);
             try {
               await api.post('/auth/register', {
                 fullName: e.target.fullName.value,
@@ -50,6 +52,8 @@ const SignupPage = () => {
               navigate('/dashboard');
             } catch (error) {
               alert('Signup failed');
+            } finally {
+              setIsLoading(false);
             }
           }}>
             <div className="mb-4">
@@ -101,9 +105,10 @@ const SignupPage = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-red-600 text-white font-semibold py-3 rounded-lg hover:bg-red-700 transition duration-200 shadow-lg shadow-red-600/30"
+              disabled={isLoading}
+              className={`w-full bg-red-600 text-white font-semibold py-3 rounded-lg hover:bg-red-700 transition duration-200 shadow-lg shadow-red-600/30 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
-              Create Account
+              {isLoading ? 'Signing Up...' : 'Create Account'}
             </button>
           </form>
           <div className="mt-6 text-center">

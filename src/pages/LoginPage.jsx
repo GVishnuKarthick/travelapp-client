@@ -13,6 +13,7 @@ const LoginPage = () => {
 
   const { setIsLoggedIn } = context;
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
@@ -34,6 +35,7 @@ const LoginPage = () => {
          
           <form onSubmit={async (e) => {
             e.preventDefault();
+            setIsLoading(true);
             try {
               const response = await api.post('/auth/login', {
                 email: e.target.email.value,
@@ -44,6 +46,8 @@ const LoginPage = () => {
               navigate('/dashboard');
             } catch (error) {
               alert('Login failed');
+            } finally {
+              setIsLoading(false);
             }
           }}>
             <div className="mb-4">
@@ -77,9 +81,10 @@ const LoginPage = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-red-600 text-white font-semibold py-3 rounded-lg hover:bg-red-700 transition duration-200 shadow-lg shadow-red-600/30"
+              disabled={isLoading}
+              className={`w-full bg-red-600 text-white font-semibold py-3 rounded-lg hover:bg-red-700 transition duration-200 shadow-lg shadow-red-600/30 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
-              Sign In
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
           <div className="mt-6 text-center">
