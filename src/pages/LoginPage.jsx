@@ -39,7 +39,7 @@ const LoginPage = () => {
                 email: e.target.email.value,
                 password: e.target.password.value
               });
-              localStorage.setItem("token", response.data.Token);
+              localStorage.setItem("token", response.data.token);
               setIsLoggedIn(true);
               navigate('/dashboard');
             } catch (error) {
