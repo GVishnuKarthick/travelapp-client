@@ -19,7 +19,7 @@ const ProfilePage = () => {
 
   const fetchProfile = async () => {
     try {
-      const res = await api.get("/users/profile");
+      const res = await api.get("/profile");
       setUserProfile(res.data);
       setEditedProfile(res.data);
     } catch (err) {
@@ -33,7 +33,7 @@ const ProfilePage = () => {
 
   const handleSaveProfile = async () => {
     try {
-      await api.put('/users/profile', editedProfile);
+      await api.put('/profile', editedProfile);
       setUserProfile(editedProfile);
       setIsEditing(false);
       // Optional: Add a toast notification here instead of an alert
