@@ -45,7 +45,7 @@ const SignupPage = () => {
                 email: e.target.email.value,
                 password: e.target.password.value
               });
-              localStorage.setItem("token", response.data.Token);
+              localStorage.setItem("token", loginResponse.data.Token);
               setIsLoggedIn(true);
               navigate('/dashboard');
             } catch (error) {

@@ -59,7 +59,7 @@ const Header = () => {
 
               <button
                 onClick={() => {
-                  localStorage.removeItem('jwt');
+                  localStorage.removeItem('token');
                   setIsLoggedIn(false);
                   navigate('/login');
                 }}
